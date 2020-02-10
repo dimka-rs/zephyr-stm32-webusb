@@ -151,7 +151,7 @@ static void webusb_read_cb(u8_t ep, int size, void *priv)
 	usb_transfer(cfg->endpoint[WEBUSB_IN_EP_IDX].ep_addr, rx_buf, size,
 		     USB_TRANS_WRITE, webusb_write_cb, cfg);
 
-    gpio_pin_toggle(struct device *port, gpio_pin_t pin);
+    //gpio_pin_toggle(struct device *port, gpio_pin_t pin);
 done:
 	usb_transfer(ep, rx_buf, sizeof(rx_buf), USB_TRANS_READ,
 		     webusb_read_cb, cfg);

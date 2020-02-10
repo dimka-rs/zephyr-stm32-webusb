@@ -287,14 +287,22 @@ static struct webusb_req_handlers req_handlers = {
 void main(void)
 {
     int ret;
-    struct device *dev;
+    struct device *led;
+    struct device *usb;
     LOG_DBG("");
 
 #define LED_PORT    DT_ALIAS_LED0_GPIOS_CONTROLLER
 #define LED         DT_ALIAS_LED0_GPIOS_PIN
-    dev = device_get_binding(LED_PORT);
-    gpio_pin_configure(dev, LED, GPIO_DIR_OUT);
-    gpio_pin_write(dev, LED, 0);
+
+    /* Pull DP (PA12) down to prevent early detection */
+    usb = device_get_binding("GPIOA");
+    gpio_pin_configure(usb, 12, GPIO_DIR_OUT);
+    gpio_pin_write(usb, 12, 0);
+
+    /* turn on LED to indicate we are running */
+    led = device_get_binding(LED_PORT);
+    gpio_pin_configure(led, LED, GPIO_DIR_OUT);
+    gpio_pin_write(led, LED, 0);
 
 	/* Set the custom and vendor request handlers */
 	webusb_register_request_handlers(&req_handlers);
